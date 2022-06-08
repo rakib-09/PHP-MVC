@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  rawphp:
+    build: ./docker
+    container_name: rawphp-service
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - default
+
+  mysqldb:
+    image: mysql:5.7
+    container_name: mysqldb-service
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/db/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: rawphp
+      MYSQL_USER: rawphp
+      MYSQL_PASSWORD: root
+    networks:
+      - default
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/html
+
+networks:
+  default:
+    driver: bridge

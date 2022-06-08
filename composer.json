@@ -1,0 +1,19 @@
+{
+  "name": "rakib-09/raw-php",
+  "description": "raw php Project",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "app\\": "./"
+    }
+  },
+  "authors": [
+    {
+      "name": "Rakib Al Hasan",
+      "email": "rakib.rumi09@gmail.com"
+    }
+  ],
+  "require": {
+    "ext-pdo": "*"
+  }
+}
