@@ -5,7 +5,10 @@
   "autoload": {
     "psr-4": {
       "app\\": "./"
-    }
+    },
+    "files": [
+      "helpers\\helper_functions.php"
+    ]
   },
   "authors": [
     {
