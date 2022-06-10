@@ -6,11 +6,11 @@ class Router
 {
     protected array $routes = [];
 
-    public function __construct(public Request $request)
+    public function __construct(public Request $request, public Response $response)
     {
     }
 
-    public function get(string $path, \Closure|string $callback)
+    public function get(string $path, array $callback)
     {
         return $this->routes['get'][$path] = $callback;
     }
@@ -21,33 +21,12 @@ class Router
         $method = $this->request->getMethod();
         $callback = $this->routes[$method][$path] ?? null;
         if (!$callback) {
-            return "Not Found";
-
+            $this->response->setStatusCode(404);
+            Template::renderPage('_404');
         }
-        if (is_string($callback)) {
-            return $this->renderPage($callback);
+        if (is_array($callback)) {
+            $callback[0] = new $callback[0]();
         }
         return call_user_func($callback);
-    }
-
-    private function renderPage(string $view): string
-    {
-        $layout = $this->renderLayout();
-        $view = $this->renderView($view);
-        return str_replace('{{content}}', $view, $layout);
-    }
-
-    private function renderLayout(): string
-    {
-        ob_start();
-        include_once root_path().'/views/layouts/main.php';
-        return ob_get_clean();
-    }
-
-    private function renderView(string $view): string
-    {
-        ob_start();
-        include_once root_path()."/views/$view.php";
-        return ob_get_clean();
     }
 }
