@@ -10,9 +10,15 @@ class Router
     {
     }
 
-    public function get(string $path, array $callback)
+    public function get(string $path, array $callback): array
     {
         return $this->routes['get'][$path] = $callback;
+    }
+
+
+    public function post(string $path, array $callback): array
+    {
+        return $this->routes['post'][$path] = $callback;
     }
 
     public function resolve()
@@ -27,6 +33,6 @@ class Router
         if (is_array($callback)) {
             $callback[0] = new $callback[0]();
         }
-        return call_user_func($callback);
+        return call_user_func($callback, $this->request);
     }
 }
