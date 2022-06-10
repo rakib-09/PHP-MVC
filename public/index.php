@@ -1,10 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 use app\controllers\ContactController;
 use app\controllers\HomeController;
 use app\core\Application;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../config/config.php';
 
 $app = new Application();
 
