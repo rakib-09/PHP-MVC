@@ -8,6 +8,13 @@ use app\models\UserModel;
 
 class AuthController extends Controller
 {
+    private UserModel $model;
+
+    public function __construct()
+    {
+        $this->model = new UserModel();
+    }
+
     public function index()
     {
         return $this->render('register');
@@ -16,11 +23,26 @@ class AuthController extends Controller
     public function create(Request $request)
     {
         extract($request->getBody(), EXTR_OVERWRITE);
-        $model = new UserModel();
+
         if ($password !== $passwordConfirmation) {
             return "Password doesn't match";
         }
-        $model->loadData($request->getBody());
-        return $model->create();
+        $this->model->loadData($request->getBody());
+        return $this->model->create();
+    }
+
+    public function loginView()
+    {
+        return $this->render('login');
+    }
+
+    public function login(Request $request)
+    {
+        extract($request->getBody(), EXTR_OVERWRITE);
+        if (!$password || !$email) {
+            return "invalid Credentials";
+        }
+
+        return $this->model->loginUser($email, $password);
     }
 }

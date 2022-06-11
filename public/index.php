@@ -20,5 +20,9 @@ $app->router->get('/register', [AuthController::class, 'index']);
 
 $app->router->post('/register', [AuthController::class, 'create']);
 
+$app->router->get('/login', [AuthController::class, 'loginView']);
+
+$app->router->post('/login', [AuthController::class, 'login']);
+
 
 $app->run();

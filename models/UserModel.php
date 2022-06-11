@@ -34,12 +34,25 @@ class UserModel extends Model
         return password_hash($this->password, PASSWORD_DEFAULT);
     }
 
-    public function matchPassword($password, $dbPass)
+    private function matchPassword($password, $dbPass): bool
     {
         if (password_verify($password, $dbPass)) {
-            echo 'Password is valid!';
-        } else {
-            echo 'Invalid password.';
+            return true;
         }
+
+        return false;
+    }
+
+    public function loginUser(string $email, string $password)
+    {
+        $tableName = $this->table();
+        $this->database->query("SELECT * FROM $tableName where email=:email");
+        $this->database->execute(['email' => $email]);
+        $user = $this->database->single();
+        if (!$user || !$this->matchPassword($password, $user->password)) {
+            echo "Invalid Credentials";
+            exit;
+        }
+        return "Login Successful!";
     }
 }
