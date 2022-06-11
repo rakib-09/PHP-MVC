@@ -8,12 +8,12 @@ use app\models\UserModel;
 
 class AuthController extends Controller
 {
-    public function registerView()
+    public function index()
     {
         return $this->render('register');
     }
 
-    public function createUser(Request $request)
+    public function create(Request $request)
     {
         extract($request->getBody(), EXTR_OVERWRITE);
         $model = new UserModel();
@@ -21,5 +21,6 @@ class AuthController extends Controller
             return "Password doesn't match";
         }
         $model->loadData($request->getBody());
+        return $model->create();
     }
 }
