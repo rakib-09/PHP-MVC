@@ -18,6 +18,10 @@ class UserModel extends Model
     public function create(): bool|\PDOException
     {
         try {
+            if ($this->checkEmailExist($this->email)) {
+                echo 'Email already Exists';
+                exit();
+            }
             $tableName = $this->table();
             $this->password = $this->hashPassword();
             $this->database->query(
@@ -53,5 +57,13 @@ class UserModel extends Model
         }
 
         return false;
+    }
+
+    private function checkEmailExist($email): bool
+    {
+        $table = $this->table();
+        $data = $this->database->query("SELECT id, email from $table where email=:email")->single(['email' => $email]);
+
+        return (bool)$data;
     }
 }

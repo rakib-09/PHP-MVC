@@ -38,15 +38,15 @@ class Database
         $this->pdoStatement->execute($params);
     }
 
-    public function resultSet(): bool|array
+    public function resultSet(array|null $params = null): bool|array
     {
-        $this->execute();
+        $this->execute($params);
         return $this->pdoStatement->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function single()
+    public function single(array|null $params = null)
     {
-        $this->execute();
+        $this->execute($params);
         return $this->pdoStatement->fetch(PDO::FETCH_OBJ);
     }
 
