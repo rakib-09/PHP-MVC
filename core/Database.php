@@ -27,9 +27,10 @@ class Database
         }
     }
 
-    public function query(string $sql): void
+    public function query(string $sql): static
     {
         $this->pdoStatement = $this->pdo->prepare($sql);
+        return $this;
     }
 
     public function execute(array|null $params = null): void

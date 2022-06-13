@@ -25,7 +25,7 @@ class AuthController extends Controller
         extract($request->getBody(), EXTR_OVERWRITE);
 
         if ($password !== $passwordConfirmation) {
-            return "Password doesn't match";
+            echo "Password doesn't match";
         }
         $this->model->loadData($request->getBody());
         return $this->model->create();
